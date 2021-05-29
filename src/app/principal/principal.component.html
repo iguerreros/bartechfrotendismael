@@ -1,0 +1,116 @@
+
+<app-menu></app-menu>
+<div class="container mt-5">
+    <nav class="navbar navbar-light bg-primary justify-content-between">
+        <a class="navbar-brand">Listado de productos</a>
+          <button class="btn btn-light my-2 my-sm-0" data-toggle="modal" *ngIf="isAdmin" data-target="#exampleModal">Nuevo</button>
+   
+      </nav>
+    <ngx-datatable
+        style="width: 100%;"
+        class="bg-light p-5"
+        [rows]="rows"
+        [columnMode]="'force'"
+        [headerHeight]="48"
+        [footerHeight]="56"
+        [rowHeight]="'auto'"
+        [scrollbarH]="true" 
+                    
+        [limit]="10"
+
+        #myTable >
+
+
+        <ngx-datatable-column name="Numero" [width]="50">
+            <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value" let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
+                <span>{{rowIndex +1}}</span>
+            </ng-template>
+        </ngx-datatable-column>
+
+
+        <ngx-datatable-column name="Nombre" prop="nombre" [width]="150"></ngx-datatable-column>                                                                                                     
+        <ngx-datatable-column name="Precio" prop="precio"  [width]="150" ></ngx-datatable-column>
+        <ngx-datatable-column name="ACCIÓN" [width]="200">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              
+                <button class="btn btn-outline-warning  m-1" *ngIf="isAdmin"  (click)="editar(row)" data-toggle="modal" data-target="#exampleModalCenter"><i class="far fa-edit"></i> Editar</button>
+                <button  class="btn btn-outline-danger  m-1"  *ngIf="isAdmin" (click)="borrar(row.id)"><i class="far fa-trash-alt"></i> Eliminar</button>
+                 
+            
+            </ng-template>
+        </ngx-datatable-column>
+    
+    </ngx-datatable>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Registrar Producto</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="panel-body">
+                    <form #f="ngForm" (ngSubmit)="guardarProducto()" novalidat>
+                        <fieldset>
+                            <div class="form-group">
+                                <input type="text" name="nombre" id="nombre" class="form-control"
+                                [(ngModel)]="nombre" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" name="precio" id="precio" class="form-control"
+                                [(ngModel)]="precio" required>
+                            </div>
+                        
+                            <!-- Change this to a button or input when using this as a form -->
+                            <button  class="btn btn-lg btn-success btn-block" [disabled]="!f.valid" >Save</button >
+
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+      
+        </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">EditarProducto</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-body">
+                <div class="panel-body">
+                    <form #f="ngForm" (ngSubmit)="onUpdate()" novalidat>
+                        <fieldset>
+                            <div class="form-group">
+                                <label for="nombre">Nombre</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre"
+                                [(ngModel)]="producto.nombre" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="precio">Precio</label>
+                                <input type="number" class="form-control" id="precio" name="precio"
+                                [(ngModel)]="producto.precio" required>
+                            </div>
+                        
+                            <!-- Change this to a button or input when using this as a form -->
+                            <button  class="btn btn-lg btn-success btn-block"  >Save</button >
+
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
